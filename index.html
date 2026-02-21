@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>MSFS Web — Orbital Flight</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="sim"></canvas>
+
+    <div id="hud">
+      <div class="brand">MSFS Web <span>Orbital Build</span></div>
+      <div class="metrics">
+        <div><label>SPD</label><span id="spd">000</span> kn</div>
+        <div><label>ALT</label><span id="alt">0000</span> ft</div>
+        <div><label>HDG</label><span id="hdg">000</span>°</div>
+        <div><label>V/S</label><span id="vs">0</span> fpm</div>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+
+    <div id="menu">
+      <h1>Choose Your Mission</h1>
+      <div class="grid">
+        <label>Aircraft
+          <select id="aircraftSelect"></select>
+        </label>
+        <label>Airport / Location
+          <select id="airportSelect"></select>
+        </label>
+        <label>Weather
+          <select id="weatherSelect"></select>
+        </label>
+        <label>Graphics
+          <select id="qualitySelect">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+      </div>
+      <div class="actions">
+        <button id="launchBtn">Launch Flight</button>
+        <button id="resumeBtn">Resume Saved Flight</button>
+      </div>
+      <p class="hint">Desktop: WASD + QE + Shift/Ctrl throttle. Mobile: touch sticks and sliders.</p>
+    </div>
+
+    <div id="mobileControls">
+      <div id="leftStick" class="stick"><div class="nub"></div></div>
+      <div id="rightStick" class="stick"><div class="nub"></div></div>
+      <div class="sliders">
+        <label>Throttle <input id="throttleSlider" type="range" min="0" max="1" step="0.01" value="0.45" /></label>
+        <label>Flaps <input id="flapsSlider" type="range" min="0" max="1" step="0.1" value="0" /></label>
+      </div>
+      <button id="cameraBtn">Camera</button>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
