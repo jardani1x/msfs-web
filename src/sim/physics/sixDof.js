@@ -71,15 +71,21 @@ export function stepSixDof(state, controls, aircraft, weather, dt, simTime) {
   const thrust = aircraft.maxThrust * s.throttle * (s.engineOn ? 1 : 0);
 
   const fwd = eulerToForward(s.orientation.roll, s.orientation.pitch, s.orientation.yaw);
+  const longitudinalAccel = (thrust - drag) / aircraft.mass;
+  const pitchLiftGain = Math.cos(s.orientation.roll) * Math.max(0.35, Math.cos(s.orientation.pitch));
   const accel = {
-    x: fwd.x * ((thrust - drag) / aircraft.mass),
-    y: (lift / aircraft.mass) - g,
-    z: fwd.z * ((thrust - drag) / aircraft.mass)
+    x: fwd.x * longitudinalAccel,
+    y: (lift / aircraft.mass) * pitchLiftGain - g,
+    z: fwd.z * longitudinalAccel
   };
 
   s.velocity.x += accel.x * dt;
   s.velocity.y += accel.y * dt;
   s.velocity.z += accel.z * dt;
+
+  const aeroDamping = clamp(1 - dt * (0.08 + s.flaps * 0.12), 0.82, 1);
+  s.velocity.x *= aeroDamping;
+  s.velocity.z *= aeroDamping;
 
   const rollRate = ctrl.roll * aircraft.controlAuthority.roll * 0.9;
   const pitchRate = ctrl.pitch * aircraft.controlAuthority.pitch * 0.65;
@@ -114,6 +120,12 @@ export function stepSixDof(state, controls, aircraft, weather, dt, simTime) {
   if (s.alt < 0) {
     s.alt = 0;
     s.velocity.y = 0;
+
+    const groundFriction = clamp(1 - dt * 1.9, 0, 1);
+    s.velocity.x *= groundFriction;
+    s.velocity.z *= groundFriction;
+    s.orientation.roll *= clamp(1 - dt * 2.5, 0, 1);
+    s.orientation.pitch *= clamp(1 - dt * 2.5, 0, 1);
   }
 
   return s;
