@@ -1,60 +1,47 @@
-# MSFS Web (React + Vite + Babylon.js + CesiumJS)
+# MSFS-Web - Massive Web Flight Simulator
 
-A browser-based Microsoft Flight Simulator inspired experience with:
-- Custom 6DOF-style aerodynamic simulation
-- Multiple aircraft (Cessna 172, Boeing 737, F/A-18)
-- Multiple airport spawn locations
-- Babylon.js realtime 3D scene
-- CesiumJS globe mini-map
-- Mobile touch controls + desktop keyboard controls
-- Weather presets with turbulence/rain/fog behavior
-- Save progress via localStorage
+## Project Structure
 
-## Stack
-- React + Vite (UI shell)
-- Babylon.js (3D world rendering)
-- CesiumJS (global map / position context)
-- Custom JS physics module (6DOF-inspired update loop)
+```
+msfs-web/
+├── backups/              # Backups for rollback
+│   └── backup_YYYYMMDD/  # Dated backups
+├── milestones/           # Each version (M0-M6)
+│   ├── M0/              # Project setup + Cesium
+│   ├── M1/              # World + Aircraft
+│   ├── M2/              # Physics Core
+│   ├── M3/              # Controls + HUD + Mobile
+│   ├── M4/              # Asset Pipeline + LOD
+│   ├── M5/              # Performance Tuning
+│   └── M6/              # Weather/Traffic (optional)
+└── README.md
+```
 
-## Controls
-### Desktop
-- `W/S` pitch
-- `A/D` roll
-- `Q/E` yaw
-- `Shift/Ctrl` throttle up/down
-- `[/]` flaps down/up
+## Current Version: M0
 
-### Mobile
-- Touch stick (pitch/roll)
-- Sliders for throttle, flaps, yaw
+### M0 - Project Setup
+- TypeScript project with Vite
+- CesiumJS for 3D geospatial rendering
+- Module architecture defined
 
-## Run
+## Deployment
+
+To deploy a milestone:
 ```bash
+cd milestones/M0
 npm install
-npm run dev
-```
-
-## Build
-```bash
 npm run build
-npm run preview
+# Deploy dist/ to Vercel
 ```
 
-## Deploy to Vercel
+## Backup & Rollback
+
+Always backup before making changes:
 ```bash
-npm i -g vercel
-vercel
-vercel --prod
+cp -r . ../backups/backup_YYYYMMDD/
 ```
 
-## GitHub repo target
-`https://github.com/jardani1x/msfs-web`
-
-If not yet connected:
+To rollback:
 ```bash
-git init
-git remote add origin https://github.com/jardani1x/msfs-web.git
-git add .
-git commit -m "feat: initial msfs-web simulator"
-git push -u origin main
+cp -r ../backups/backup_YYYYMMDD/* ./
 ```
